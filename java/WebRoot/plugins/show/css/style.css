@@ -1,0 +1,55 @@
+#header {
+	background: #2ca6cb;
+	box-shadow: 2px 4px 5px rgba(3, 3, 3, 0.2);
+}
+
+#header h1,
+#header h3,
+#header a {
+	color: white;
+}
+
+div.about {
+	margin-top: 50px;
+}
+
+div.about h1,
+div.about h2,
+div.about h3 {
+	color: #000000;
+}
+
+div.about p {
+	margin: 0 0 25px;
+	color: #282E36;
+}
+
+footer {
+	margin: 25px;
+	margin-top: 100px;
+}
+
+.blog-info-header {
+	color: #999;
+	font-size: 12px;
+	margin: 3px 0 60px;
+}
+
+
+/*修改bootstra 属性*/
+
+
+/*开源项目中的缩略图 */
+
+.thumbnail {
+	padding: 0px;
+}
+
+
+/*#header h1 {
+	font-size: 300%;
+}
+
+#header h2 {
+	font-size: 150%;
+}*/

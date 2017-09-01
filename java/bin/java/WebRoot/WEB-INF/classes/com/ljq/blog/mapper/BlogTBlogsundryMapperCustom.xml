@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljq.blog.mapper.BlogTBlogsundryMapperCustom">
+
+	<select id="selectByBlogId" parameterType="java.lang.String"
+		resultType="com.ljq.blog.po.BlogTBlogsundry">
+		SELECT
+		blog_t_blogsundry.*
+		FROM
+		blog_t_blogsundry
+		WHERE
+		blog_t_blogsundry.blogid =
+		#{blogId}
+	</select>
+</mapper>

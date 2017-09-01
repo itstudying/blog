@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljq.blog.mapper.BlogTBlogfileMapperCustom">
+
+	<!-- 开启这个mapper所述namespace的二级缓存,使用ehcache -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+
+	<sql id="select-blogfile-sql">
+		<if test="blogTBlogCustom!=null">
+			<if test="blogTBlogCustom.id!=null and blogTBlogCustom!=''">
+				blog_t_blogfile.blogid = #{blogTBlogCustom.id}
+			</if>
+		</if>
+	</sql>
+
+
+	<select id="selectByBlogId" parameterType="com.ljq.blog.po.BlogTBlogVo"
+		resultType="com.ljq.blog.po.BlogTBlogfileCustom">
+		SELECT
+		blog_t_blogfile.*
+		FROM
+		blog_t_blogfile
+		<where>
+			<include refid="select-blogfile-sql"></include>
+		</where>
+	</select>
+
+	<select id="selectFirstFileByBlogId" parameterType="com.ljq.blog.po.BlogTBlog"
+		resultType="com.ljq.blog.po.BlogTBlogfileCustom">
+		SELECT
+		*
+		FROM
+		blog_t_blogfile
+		WHERE
+		blog_t_blogfile.blogid =
+		#{id} and blog_t_blogfile.classify = 'other'
+		limit 1
+	</select>
+</mapper>

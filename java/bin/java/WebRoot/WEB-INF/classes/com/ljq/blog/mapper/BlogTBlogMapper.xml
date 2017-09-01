@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljq.blog.mapper.BlogTBlogMapper">
+
+	<!-- 开启这个mapper所述namespace的二级缓存,使用ehcache -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+
+
+	<resultMap id="BaseResultMap" type="com.ljq.blog.po.BlogTBlog">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="classify" property="classify" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="pubtime" property="pubtime" jdbcType="VARCHAR" />
+		<result column="intro" property="intro" jdbcType="VARCHAR" />
+		<result column="introimg" property="introimg" jdbcType="VARCHAR" />
+		<result column="wordscount" property="wordscount" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.ljq.blog.po.BlogTBlog"
+		extends="BaseResultMap">
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, classify, title, pubtime, intro, introimg, wordscount
+	</sql>
+	<sql id="Blob_Column_List">
+		content
+	</sql>
+	<select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+		parameterType="com.ljq.blog.po.BlogTBlogExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from blog_t_blog
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.ljq.blog.po.BlogTBlogExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from blog_t_blog
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from blog_t_blog
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from blog_t_blog
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.ljq.blog.po.BlogTBlogExample">
+		delete from blog_t_blog
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.ljq.blog.po.BlogTBlog"
+	flushCache="true">
+	insert into blog_t_blog (id, classify, title,
+	pubtime, intro, introimg,
+	wordscount, content)
+	values (#{id,jdbcType=VARCHAR}, #{classify,jdbcType=VARCHAR},
+	#{title,jdbcType=VARCHAR},
+	#{pubtime,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, #{introimg,jdbcType=VARCHAR},
+	#{wordscount,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.ljq.blog.po.BlogTBlog">
+		insert into blog_t_blog
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="classify != null">
+				classify,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="pubtime != null">
+				pubtime,
+			</if>
+			<if test="intro != null">
+				intro,
+			</if>
+			<if test="introimg != null">
+				introimg,
+			</if>
+			<if test="wordscount != null">
+				wordscount,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="classify != null">
+				#{classify,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="pubtime != null">
+				#{pubtime,jdbcType=VARCHAR},
+			</if>
+			<if test="intro != null">
+				#{intro,jdbcType=VARCHAR},
+			</if>
+			<if test="introimg != null">
+				#{introimg,jdbcType=VARCHAR},
+			</if>
+			<if test="wordscount != null">
+				#{wordscount,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.ljq.blog.po.BlogTBlogExample"
+		resultType="java.lang.Integer">
+		select count(*) from blog_t_blog
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update blog_t_blog
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=VARCHAR},
+			</if>
+			<if test="record.classify != null">
+				classify = #{record.classify,jdbcType=VARCHAR},
+			</if>
+			<if test="record.title != null">
+				title = #{record.title,jdbcType=VARCHAR},
+			</if>
+			<if test="record.pubtime != null">
+				pubtime = #{record.pubtime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.intro != null">
+				intro = #{record.intro,jdbcType=VARCHAR},
+			</if>
+			<if test="record.introimg != null">
+				introimg = #{record.introimg,jdbcType=VARCHAR},
+			</if>
+			<if test="record.wordscount != null">
+				wordscount = #{record.wordscount,jdbcType=INTEGER},
+			</if>
+			<if test="record.content != null">
+				content = #{record.content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExampleWithBLOBs" parameterType="map">
+		update blog_t_blog
+		set id = #{record.id,jdbcType=VARCHAR},
+		classify = #{record.classify,jdbcType=VARCHAR},
+		title = #{record.title,jdbcType=VARCHAR},
+		pubtime = #{record.pubtime,jdbcType=VARCHAR},
+		intro = #{record.intro,jdbcType=VARCHAR},
+		introimg = #{record.introimg,jdbcType=VARCHAR},
+		wordscount = #{record.wordscount,jdbcType=INTEGER},
+		content = #{record.content,jdbcType=LONGVARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update blog_t_blog
+		set id = #{record.id,jdbcType=VARCHAR},
+		classify = #{record.classify,jdbcType=VARCHAR},
+		title = #{record.title,jdbcType=VARCHAR},
+		pubtime = #{record.pubtime,jdbcType=VARCHAR},
+		intro = #{record.intro,jdbcType=VARCHAR},
+		introimg = #{record.introimg,jdbcType=VARCHAR},
+		wordscount = #{record.wordscount,jdbcType=INTEGER}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ljq.blog.po.BlogTBlog">
+		update blog_t_blog
+		<set>
+			<if test="classify != null">
+				classify = #{classify,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="pubtime != null">
+				pubtime = #{pubtime,jdbcType=VARCHAR},
+			</if>
+			<if test="intro != null">
+				intro = #{intro,jdbcType=VARCHAR},
+			</if>
+			<if test="introimg != null">
+				introimg = #{introimg,jdbcType=VARCHAR},
+			</if>
+			<if test="wordscount != null">
+				wordscount = #{wordscount,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ljq.blog.po.BlogTBlog">
+		update blog_t_blog
+		set classify = #{classify,jdbcType=VARCHAR},
+		title = #{title,jdbcType=VARCHAR},
+		pubtime = #{pubtime,jdbcType=VARCHAR},
+		intro = #{intro,jdbcType=VARCHAR},
+		introimg = #{introimg,jdbcType=VARCHAR},
+		wordscount = #{wordscount,jdbcType=INTEGER},
+		content = #{content,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.ljq.blog.po.BlogTBlog">
+		update blog_t_blog
+		set classify = #{classify,jdbcType=VARCHAR},
+		title = #{title,jdbcType=VARCHAR},
+		pubtime = #{pubtime,jdbcType=VARCHAR},
+		intro = #{intro,jdbcType=VARCHAR},
+		introimg = #{introimg,jdbcType=VARCHAR},
+		wordscount = #{wordscount,jdbcType=INTEGER}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljq.blog.mapper.BlogTBlogsundryMapper" >
+  <resultMap id="BaseResultMap" type="com.ljq.blog.po.BlogTBlogsundry" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="blogid" property="blogid" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="love" property="love" jdbcType="VARCHAR" />
+    <result column="articleviews" property="articleviews" jdbcType="VARCHAR" />
+    <result column="isshow" property="isshow" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, blogid, description, keywords, love, articleviews, isshow
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljq.blog.po.BlogTBlogsundryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blog_t_blogsundry
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from blog_t_blogsundry
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_t_blogsundry
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljq.blog.po.BlogTBlogsundryExample" >
+    delete from blog_t_blogsundry
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljq.blog.po.BlogTBlogsundry" >
+    insert into blog_t_blogsundry (id, blogid, description, 
+      keywords, love, articleviews, 
+      isshow)
+    values (#{id,jdbcType=INTEGER}, #{blogid,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{love,jdbcType=VARCHAR}, #{articleviews,jdbcType=VARCHAR}, 
+      #{isshow,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljq.blog.po.BlogTBlogsundry" >
+    insert into blog_t_blogsundry
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="blogid != null" >
+        blogid,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="love != null" >
+        love,
+      </if>
+      <if test="articleviews != null" >
+        articleviews,
+      </if>
+      <if test="isshow != null" >
+        isshow,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="blogid != null" >
+        #{blogid,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="love != null" >
+        #{love,jdbcType=VARCHAR},
+      </if>
+      <if test="articleviews != null" >
+        #{articleviews,jdbcType=VARCHAR},
+      </if>
+      <if test="isshow != null" >
+        #{isshow,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljq.blog.po.BlogTBlogsundryExample" resultType="java.lang.Integer" >
+    select count(*) from blog_t_blogsundry
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update blog_t_blogsundry
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.blogid != null" >
+        blogid = #{record.blogid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keywords != null" >
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.love != null" >
+        love = #{record.love,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articleviews != null" >
+        articleviews = #{record.articleviews,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isshow != null" >
+        isshow = #{record.isshow,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update blog_t_blogsundry
+    set id = #{record.id,jdbcType=INTEGER},
+      blogid = #{record.blogid,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      love = #{record.love,jdbcType=VARCHAR},
+      articleviews = #{record.articleviews,jdbcType=VARCHAR},
+      isshow = #{record.isshow,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljq.blog.po.BlogTBlogsundry" >
+    update blog_t_blogsundry
+    <set >
+      <if test="blogid != null" >
+        blogid = #{blogid,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="love != null" >
+        love = #{love,jdbcType=VARCHAR},
+      </if>
+      <if test="articleviews != null" >
+        articleviews = #{articleviews,jdbcType=VARCHAR},
+      </if>
+      <if test="isshow != null" >
+        isshow = #{isshow,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljq.blog.po.BlogTBlogsundry" >
+    update blog_t_blogsundry
+    set blogid = #{blogid,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      love = #{love,jdbcType=VARCHAR},
+      articleviews = #{articleviews,jdbcType=VARCHAR},
+      isshow = #{isshow,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

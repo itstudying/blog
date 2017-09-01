@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljq.blog.mapper.BlogTManagerMapper">
+	<!-- 开启这个mapper所述namespace的二级缓存,使用ehcache -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+
+	<resultMap id="BaseResultMap" type="com.ljq.blog.po.BlogTManager">
+		<id column="no" property="no" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="CHAR" />
+		<result column="headimg" property="headimg" jdbcType="VARCHAR" />
+		<result column="grade" property="grade" jdbcType="CHAR" />
+		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<result column="wantsay" property="wantsay" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="VARCHAR" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		no, name, password, email, phone, sex, headimg, grade,
+		nickname, wantsay,
+		birthday,
+		area
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.ljq.blog.po.BlogTManagerExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from blog_t_manager
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from blog_t_manager
+		where no = #{no,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		blog_t_manager
+		where no = #{no,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.ljq.blog.po.BlogTManagerExample">
+		delete from blog_t_manager
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.ljq.blog.po.BlogTManager">
+		insert into blog_t_manager
+		(no, name, password,
+		email, phone, sex, headimg,
+		grade, nickname,
+		wantsay,
+		birthday, area)
+		values (#{no,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+		#{sex,jdbcType=CHAR},
+		#{headimg,jdbcType=VARCHAR},
+		#{grade,jdbcType=CHAR}, #{nickname,jdbcType=VARCHAR},
+		#{wantsay,jdbcType=VARCHAR},
+		#{birthday,jdbcType=VARCHAR},
+		#{area,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.ljq.blog.po.BlogTManager">
+		insert into blog_t_manager
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="no != null">
+				no,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="headimg != null">
+				headimg,
+			</if>
+			<if test="grade != null">
+				grade,
+			</if>
+			<if test="nickname != null">
+				nickname,
+			</if>
+			<if test="wantsay != null">
+				wantsay,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<if test="area != null">
+				area,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="no != null">
+				#{no,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=CHAR},
+			</if>
+			<if test="headimg != null">
+				#{headimg,jdbcType=VARCHAR},
+			</if>
+			<if test="grade != null">
+				#{grade,jdbcType=CHAR},
+			</if>
+			<if test="nickname != null">
+				#{nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="wantsay != null">
+				#{wantsay,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				#{area,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.ljq.blog.po.BlogTManagerExample"
+		resultType="java.lang.Integer">
+		select count(*) from blog_t_manager
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update blog_t_manager
+		<set>
+			<if test="record.no != null">
+				no = #{record.no,jdbcType=VARCHAR},
+			</if>
+			<if test="record.name != null">
+				name = #{record.name,jdbcType=VARCHAR},
+			</if>
+			<if test="record.password != null">
+				password = #{record.password,jdbcType=VARCHAR},
+			</if>
+			<if test="record.email != null">
+				email = #{record.email,jdbcType=VARCHAR},
+			</if>
+			<if test="record.phone != null">
+				phone = #{record.phone,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sex != null">
+				sex = #{record.sex,jdbcType=CHAR},
+			</if>
+			<if test="record.headimg != null">
+				headimg = #{record.headimg,jdbcType=VARCHAR},
+			</if>
+			<if test="record.grade != null">
+				grade = #{record.grade,jdbcType=CHAR},
+			</if>
+			<if test="record.nickname != null">
+				nickname = #{record.nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="record.wantsay != null">
+				wantsay = #{record.wantsay,jdbcType=VARCHAR},
+			</if>
+			<if test="record.birthday != null">
+				birthday = #{record.birthday,jdbcType=VARCHAR},
+			</if>
+			<if test="record.area != null">
+				area = #{record.area,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update blog_t_manager
+		set no = #{record.no,jdbcType=VARCHAR},
+		name =
+		#{record.name,jdbcType=VARCHAR},
+		password =
+		#{record.password,jdbcType=VARCHAR},
+		email =
+		#{record.email,jdbcType=VARCHAR},
+		phone =
+		#{record.phone,jdbcType=VARCHAR},
+		sex = #{record.sex,jdbcType=CHAR},
+		headimg = #{record.headimg,jdbcType=VARCHAR},
+		grade =
+		#{record.grade,jdbcType=CHAR},
+		nickname =
+		#{record.nickname,jdbcType=VARCHAR},
+		wantsay =
+		#{record.wantsay,jdbcType=VARCHAR},
+		birthday =
+		#{record.birthday,jdbcType=VARCHAR},
+		area =
+		#{record.area,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ljq.blog.po.BlogTManager">
+		update blog_t_manager
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=CHAR},
+			</if>
+			<if test="headimg != null">
+				headimg = #{headimg,jdbcType=VARCHAR},
+			</if>
+			<if test="grade != null">
+				grade = #{grade,jdbcType=CHAR},
+			</if>
+			<if test="nickname != null">
+				nickname = #{nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="wantsay != null">
+				wantsay = #{wantsay,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				area = #{area,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where no = #{no,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.ljq.blog.po.BlogTManager">
+		update
+		blog_t_manager
+		set name = #{name,jdbcType=VARCHAR},
+		password =
+		#{password,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		phone =
+		#{phone,jdbcType=VARCHAR},
+		sex = #{sex,jdbcType=CHAR},
+		headimg =
+		#{headimg,jdbcType=VARCHAR},
+		grade = #{grade,jdbcType=CHAR},
+		nickname =
+		#{nickname,jdbcType=VARCHAR},
+		wantsay = #{wantsay,jdbcType=VARCHAR},
+		birthday = #{birthday,jdbcType=VARCHAR},
+		area =
+		#{area,jdbcType=VARCHAR}
+		where no = #{no,jdbcType=VARCHAR}
+	</update>
+</mapper>

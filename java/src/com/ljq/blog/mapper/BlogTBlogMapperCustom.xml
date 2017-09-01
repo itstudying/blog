@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljq.blog.mapper.BlogTBlogMapperCustom">
+
+	<!-- 开启这个mapper所述namespace的二级缓存,使用ehcache -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+
+	<sql id="selectBlogWhereSql">
+		<if test="blogTBlogCustom!=null">
+			<if test="blogTBlogCustom.id!=null and blogTBlogCustom.id!=''">
+				and blog_t_blog.id = #{blogTBlogCustom.id}
+			</if>
+			<if test="blogTBlogCustom.classify!=null and blogTBlogCustom.classify!=''">
+				and blog_t_blogclassify.id = #{blogTBlogCustom.classify}
+			</if>
+		</if>
+	</sql>
+
+	<!-- 查询出博客表及所附带的博客文件的信息，并且博客的分类不是博客分类的ID -->
+	<sql id="selectBlogWithBlogfileSelectSQL">
+		SELECT
+		blog_t_blog.id,
+		blog_t_blogclassify.classify,
+		blog_t_blog.title,
+		blog_t_blog.pubtime,
+		blog_t_blog.intro,
+		blog_t_blog.introimg,
+		blog_t_blog.wordscount,
+		blog_t_blog.content,
+		blog_t_blogfile.id
+		blogfile_id,
+		blog_t_blogfile.classify
+		blogfile_classify,
+		blog_t_blogfile.filepath,
+		blog_t_blogfile.blogid
+		FROM
+		(
+		blog_t_blog
+		INNER
+		JOIN blog_t_blogfile ON blog_t_blog.id =
+		blog_t_blogfile.blogid
+		)
+		INNER
+		JOIN blog_t_blogclassify ON
+		blog_t_blog.classify =
+		blog_t_blogclassify.id
+	</sql>
+
+
+	<resultMap type="com.ljq.blog.po.BlogTBlogCustom" id="selectBlogMap">
+		<id column="id" property="id" />
+		<result column="classify" property="classify" />
+		<result column="title" property="title" />
+		<result column="pubtime" property="pubtime" />
+		<result column="intro" property="intro" />
+		<result column="introimg" property="introimg" />
+		<result column="wordscount" property="wordscount" />
+		<result column="content" property="content" />
+		<!-- 按需加载博客的杂项信息 -->
+		<association property="blogsundry"
+			select="com.ljq.blog.mapper.BlogTBlogsundryMapperCustom.selectByBlogId"
+			column="id"></association>
+	</resultMap>
+	<select id="selectBlog" parameterType="com.ljq.blog.po.BlogTBlogVo"
+		resultMap="selectBlogMap">
+		SELECT
+		blog_t_blog.id,
+		blog_t_blogclassify.classify,
+		blog_t_blog.title,
+		blog_t_blog.pubtime,
+		blog_t_blog.intro,
+		blog_t_blog.introimg,
+		blog_t_blog.wordscount,
+		blog_t_blog.content
+		FROM
+		blog_t_blog,
+		blog_t_blogclassify
+
+		<where>
+			blog_t_blog.classify = blog_t_blogclassify.id
+			<include refid="selectBlogWhereSql"></include>
+		</where>
+		ORDER BY
+		blog_t_blog.pubtime DESC
+	</select>
+
+
+	<!-- 查询结果映射， -->
+	<resultMap type="com.ljq.blog.po.BlogTBlogCustom" id="blogWithBlogfilelistResultmap"
+		extends="selectBlogMap">
+
+		<!-- list集合映射 -->
+		<collection property="blogfileCustoms" ofType="com.ljq.blog.po.BlogTBlogfileCustom">
+			<id column="blogfile_id" property="id" />
+			<result column="blogid" property="blogid" />
+			<result column="filepath" property="filepath" />
+			<result column="blogfile_classify" property="classify" />
+		</collection>
+
+	</resultMap>
+	<select id="selectBlogWithBlogfile" parameterType="com.ljq.blog.po.BlogTBlogVo"
+		resultMap="blogWithBlogfilelistResultmap">
+		<include refid="selectBlogWithBlogfileSelectSQL"></include>
+		<where>
+			<include refid="selectBlogWhereSql"></include>
+		</where>
+		ORDER BY
+		blog_t_blog.pubtime DESC
+
+	</select>
+
+
+	<!-- 根据ID查询出博客文章带博客文章文件的 -->
+	<select id="selectBlogWithBlogfileById" parameterType="java.lang.String"
+		resultMap="blogWithBlogfilelistResultmap">
+		<include refid="selectBlogWithBlogfileSelectSQL"></include>
+		<where>
+			blog_t_blog.id = #{id}
+		</where>
+	</select>
+
+
+	<!-- 查询各个分类的博客文章的数量 -->
+	<!-- <resultMap type="java.util.HashMap" id="blogCountGroupByClassifyMap"> 
+		<result column="classify" property="key" /> <result column="count" property="value" 
+		/> </resultMap> -->
+	<select id="selectBlogCountGroupByClassify" resultType="java.util.TreeMap">
+		SELECT
+		blog_t_blogclassify.id id,
+		blog_t_blogclassify.classify classify,
+		count(blog_t_blog.classify) count
+		FROM
+		blog_t_blog,
+		blog_t_blogclassify
+		WHERE
+		blog_t_blogclassify.id = blog_t_blog.classify
+		GROUP BY
+		blog_t_blog.classify
+	</select>
+
+</mapper>

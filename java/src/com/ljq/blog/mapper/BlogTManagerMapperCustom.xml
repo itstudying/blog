@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljq.blog.mapper.BlogTManagerMapperCustom">
+
+	<!-- 开启这个mapper所述namespace的二级缓存,使用ehcache -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+
+	<sql id="query_manager_where">
+		<if test="blogTManagerCustom!=null">
+			<if test="blogTManagerCustom.email!=null and blogTManagerCustom.email!=''">
+				<if
+					test="blogTManagerCustom.password!=null and blogTManagerCustom.password!=''">
+					blog_t_manager.email = #{blogTManagerCustom.email} and
+					blog_t_manager.password = #{blogTManagerCustom.password}
+				</if>
+			</if>
+		</if>
+	</sql>
+	<select id="selectManager" parameterType="com.ljq.blog.po.BlogTManagerVo"
+		resultType="com.ljq.blog.po.BlogTManagerCustom">
+		select blog_t_manager.* from
+		blog_t_manager
+		<where>
+			<include refid="query_manager_where"></include>
+		</where>
+	</select>
+</mapper>
